@@ -10,6 +10,11 @@
  * Domain Path: /languages
  */
 
+// Define default values as constants
+define('RL_GM_DEFAULT_LAT', '52.231998990860056');
+define('RL_GM_DEFAULT_LNG', '21.00603791534297');
+define('RL_GM_DEFAULT_ZOOM', '14');
+
 // Admin menu and settings page
 function rl_google_maps_register_settings() {
     register_setting('rl_google_maps_options', 'rl_google_maps_api_key', array(
@@ -65,19 +70,19 @@ function rl_google_maps_settings_page() {
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Default Latitude', 'rl-google-maps'); ?></th>
                     <td>
-                        <input type="text" name="rl_google_maps_lat" value="<?php echo esc_attr(get_option('rl_google_maps_lat', '52.231998990860056')); ?>" size="20" />
+                        <input type="text" name="rl_google_maps_lat" value="<?php echo esc_attr(get_option('rl_google_maps_lat', RL_GM_DEFAULT_LAT)); ?>" size="20" />
                     </td>
                 </tr>
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Default Longitude', 'rl-google-maps'); ?></th>
                     <td>
-                        <input type="text" name="rl_google_maps_lng" value="<?php echo esc_attr(get_option('rl_google_maps_lng', '21.00603791534297')); ?>" size="20" />
+                        <input type="text" name="rl_google_maps_lng" value="<?php echo esc_attr(get_option('rl_google_maps_lng', RL_GM_DEFAULT_LNG)); ?>" size="20" />
                     </td>
                 </tr>
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Default Zoom', 'rl-google-maps'); ?></th>
                     <td>
-                        <input type="number" name="rl_google_maps_zoom" value="<?php echo esc_attr(get_option('rl_google_maps_zoom', '14')); ?>" min="1" max="21" />
+                        <input type="number" name="rl_google_maps_zoom" value="<?php echo esc_attr(get_option('rl_google_maps_zoom', RL_GM_DEFAULT_ZOOM)); ?>" min="1" max="21" />
                     </td>
                 </tr>
             </table>
@@ -94,9 +99,9 @@ function google_maps_shortcode($atts) {
     // Load global defaults from options
     $global_defaults = array(
         'api_key'      => get_option('rl_google_maps_api_key', ''),
-        'lat'          => get_option('rl_google_maps_lat', '52.231998990860056'),
-        'lng'          => get_option('rl_google_maps_lng', '21.00603791534297'),
-        'zoom'         => get_option('rl_google_maps_zoom', '14'),
+        'lat'          => get_option('rl_google_maps_lat', RL_GM_DEFAULT_LAT),
+        'lng'          => get_option('rl_google_maps_lng', RL_GM_DEFAULT_LNG),
+        'zoom'         => get_option('rl_google_maps_zoom', RL_GM_DEFAULT_ZOOM),
         'marker'       => get_option('rl_google_maps_marker', ''),
         'marker_width' => '48',
         'marker_height'=> '48',
