@@ -1,0 +1,59 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: RL Google Maps 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-22T00:26:00+00:00\n"
+"PO-Revision-Date: 2025-05-22 00:34+0200\n"
+"Last-Translator: Rafał Leśniak\n"
+"Language-Team: \n"
+"Language: pl_PL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 3.6\n"
+"X-Domain: rl-google-maps\n"
+
+#: rl-google-maps.php:29
+msgid "RL Google Maps Settings"
+msgstr "Ustawienia RL Google Maps"
+
+#: rl-google-maps.php:30
+msgid "RL Google Maps"
+msgstr "RL Google Maps"
+
+#: rl-google-maps.php:42
+msgid "RL Google Maps – Global Defaults"
+msgstr "RL Google Maps – Domyślne ustawienia"
+
+#: rl-google-maps.php:48
+msgid "Google Maps API Key"
+msgstr "Klucz API Google Maps"
+
+#: rl-google-maps.php:54
+msgid "Default Marker URL"
+msgstr "Domyślny URL markera"
+
+#: rl-google-maps.php:56
+msgid "Leave empty for plugin default."
+msgstr "Pozostaw puste, aby użyć domyślnego markera wtyczki."
+
+#: rl-google-maps.php:61
+msgid "Default Latitude"
+msgstr "Domyślna szerokość geograficzna"
+
+#: rl-google-maps.php:67
+msgid "Default Longitude"
+msgstr "Domyślna długość geograficzna"
+
+#: rl-google-maps.php:73
+msgid "Default Zoom"
+msgstr "Domyślne przybliżenie"
+
+#: rl-google-maps.php:104
+msgid "Error:"
+msgstr "Błąd:"
+
+#: rl-google-maps.php:105
+msgid "You must provide a Google Maps API key in the admin settings or using the api_key attribute in the shortcode."
+msgstr "Musisz podać klucz API Google Maps w ustawieniach administracyjnych lub używając atrybutu api_key w kodzie shortcode."

@@ -16,13 +16,16 @@ Insert the following shortcode into your page or post content:
 - `lat` – latitude (default: `52.231998990860056`)
 - `lng` – longitude (default: `21.00603791534297`)
 - `zoom` – map zoom level (default: `14`)
-- `marker` – URL to a custom marker icon (default: `[plugin-url]/assets/img/default-marker.svg`)
+- `marker` – URL to a custom marker icon. If not set in shortcode or admin settings, the plugin's default SVG marker will be used: `[plugin-url]/assets/img/default-marker.svg`
 - `marker_width` – marker width in px (default: `48`)
 - `marker_height` – marker height in px (default: `48`)
 - `phone` – phone number (default: `+48 000 000 000`)
 - `address` – address displayed in the info window (default: `plac Defilad 1, 00-901 Warszawa`)
 - `title` – title in the info window (default: `Company Name`)
 - `email` – email address (default: `contact@domain.com`)
+
+**Note:**  
+If the "Default Marker URL" field in the admin settings is empty and you do not provide a `marker` attribute in the shortcode, the plugin will always use its built-in default marker SVG.
 
 ### Example usage
 
@@ -41,7 +44,7 @@ The shortcode will automatically display a map with a marker and an info window 
 - [ ] Cluster support for multiple markers
 - [ ] Option to display directions between points
 - [ ] Gutenberg block for easier map insertion
-- [ ] Admin settings page for global defaults (API key, marker, etc.)
+- [X] Admin settings page for global defaults (API key, marker, etc.)
 - [ ] Support for marker popups with custom HTML
 - [ ] Responsive and mobile-friendly improvements
 - [ ] Accessibility enhancements
