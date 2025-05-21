@@ -10,11 +10,21 @@
 
 // Admin menu and settings page
 function rl_google_maps_register_settings() {
-    register_setting('rl_google_maps_options', 'rl_google_maps_api_key');
-    register_setting('rl_google_maps_options', 'rl_google_maps_marker');
-    register_setting('rl_google_maps_options', 'rl_google_maps_lat');
-    register_setting('rl_google_maps_options', 'rl_google_maps_lng');
-    register_setting('rl_google_maps_options', 'rl_google_maps_zoom');
+    register_setting('rl_google_maps_options', 'rl_google_maps_api_key', array(
+        'sanitize_callback' => 'sanitize_text_field'
+    ));
+    register_setting('rl_google_maps_options', 'rl_google_maps_marker', array(
+        'sanitize_callback' => 'esc_url_raw'
+    ));
+    register_setting('rl_google_maps_options', 'rl_google_maps_lat', array(
+        'sanitize_callback' => 'floatval'
+    ));
+    register_setting('rl_google_maps_options', 'rl_google_maps_lng', array(
+        'sanitize_callback' => 'floatval'
+    ));
+    register_setting('rl_google_maps_options', 'rl_google_maps_zoom', array(
+        'sanitize_callback' => 'intval'
+    ));
 }
 add_action('admin_init', 'rl_google_maps_register_settings');
 
