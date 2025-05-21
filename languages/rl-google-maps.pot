@@ -1,0 +1,60 @@
+# Copyright (C) 2025 Rafał Leśniak
+# This file is distributed under the same license as the RL Google Maps plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: RL Google Maps 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-22T00:26:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+"X-Domain: rl-google-maps\n"
+
+#: rl-google-maps.php:29
+msgid "RL Google Maps Settings"
+msgstr ""
+
+#: rl-google-maps.php:30
+msgid "RL Google Maps"
+msgstr ""
+
+#: rl-google-maps.php:42
+msgid "RL Google Maps – Global Defaults"
+msgstr ""
+
+#: rl-google-maps.php:48
+msgid "Google Maps API Key"
+msgstr ""
+
+#: rl-google-maps.php:54
+msgid "Default Marker URL"
+msgstr ""
+
+#: rl-google-maps.php:56
+msgid "Leave empty for plugin default."
+msgstr ""
+
+#: rl-google-maps.php:61
+msgid "Default Latitude"
+msgstr ""
+
+#: rl-google-maps.php:67
+msgid "Default Longitude"
+msgstr ""
+
+#: rl-google-maps.php:73
+msgid "Default Zoom"
+msgstr ""
+
+#: rl-google-maps.php:104
+msgid "Error:"
+msgstr ""
+
+#: rl-google-maps.php:105
+msgid "You must provide a Google Maps API key in the admin settings or using the api_key attribute in the shortcode."
+msgstr ""
