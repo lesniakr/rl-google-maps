@@ -163,10 +163,10 @@ function google_maps_shortcode($atts) {
         'marker_height' => '48',
         'height'        => get_option('rl_google_maps_height', RL_GM_DEFAULT_HEIGHT),
         'mobile_height' => get_option('rl_google_maps_mobile_height', RL_GM_DEFAULT_MOBILE_HEIGHT),
-        'phone'         => '+48 000 000 000',
-        'address'       => 'plac Defilad 1, 00-901 Warszawa',
-        'title'         => 'Company Name',
-        'email'         => 'contact@domain.com',
+        'phone'         => '',
+        'address'       => '',
+        'title'         => '',
+        'email'         => '',
     );
 
     // Merge shortcode attributes with global defaults
@@ -193,9 +193,6 @@ function google_maps_shortcode($atts) {
 
     // Register the Google Maps API script with dynamic key
     $api_url = 'https://maps.googleapis.com/maps/api/js?key=' . esc_attr($atts['api_key']) . '&callback=initGoogleMaps';
-
-    // Font Awesome CDN
-    $fa_script = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />';
 
     // Get custom map styles
     $custom_styles = get_option('rl_google_maps_styles', '');
@@ -237,8 +234,6 @@ function google_maps_shortcode($atts) {
             width: 24px;
             height: 24px;
             margin-right: 10px;
-            background-color: #f8f8f8;
-            border-radius: 50%;
             color: #555;
         }
         .rl-gm-info-text {
@@ -268,11 +263,27 @@ function google_maps_shortcode($atts) {
             background: linear-gradient(45deg, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 51%, rgba(255,255,255,0) 100%) !important;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
         }
+        /* InfoWindow header with close button */
+        .gm-style .gm-style-iw-chr {
+            display: flex !important;
+            justify-content: flex-end !important;
+            position: absolute !important;
+            top: 10px !important;
+            right: 10px !important;
+            width: auto !important;
+            height: auto !important;
+        }
+        .gm-style .gm-style-iw-ch {
+            display: none !important;
+        }
         /* Close button styling */
         .gm-style .gm-style-iw-c button.gm-ui-hover-effect {
-            top: 0 !important;
-            right: 0 !important;
-            opacity: 0.8 !important;
+            width: 32px !important;
+            height: 32px !important;
+            opacity: 0.6 !important;
+        }
+        .gm-style .gm-style-iw-c button.gm-ui-hover-effect span {
+            margin: 4px !important;
         }
         .gm-style .gm-style-iw-c button.gm-ui-hover-effect:hover {
             opacity: 1 !important;
@@ -310,35 +321,41 @@ function google_maps_shortcode($atts) {
         setTimeout(function() {
             marker.setAnimation(null); // Stops the animation after 3 seconds
         }, 3000);
-
+        " . (!empty($atts['title']) || !empty($atts['phone']) || !empty($atts['email']) || !empty($atts['address']) ? "
         const infoWindowContent = `
             <div class=\"rl-gm-info-window\">
-                <h4 class=\"rl-gm-info-title\">{$atts['title']}</h4>
+                " . (!empty($atts['title']) ? "<h4 class=\"rl-gm-info-title\">{$atts['title']}</h4>" : "") . "
                 <div class=\"rl-gm-info-content\">
+                    " . (!empty($atts['phone']) ? "
                     <div class=\"rl-gm-info-item\">
                         <div class=\"rl-gm-info-icon\">
-                            <i class=\"fa-solid fa-phone\"></i>
+                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2\"/></svg>
                         </div>
                         <div class=\"rl-gm-info-text\">
                             <a href=\"tel:{$cleaned_phone}\" class=\"rl-gm-info-link\">{$atts['phone']}</a>
                         </div>
                     </div>
+                    " : "") . "
+                    " . (!empty($atts['email']) ? "
                     <div class=\"rl-gm-info-item\">
                         <div class=\"rl-gm-info-icon\">
-                            <i class=\"fa-solid fa-envelope\"></i>
+                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10\"/><path d=\"M3 7l9 6l9 -6\"/></svg>
                         </div>
                         <div class=\"rl-gm-info-text\">
                             <a href=\"mailto:{$atts['email']}\" class=\"rl-gm-info-link\">{$atts['email']}</a>
                         </div>
                     </div>
+                    " : "") . "
+                    " . (!empty($atts['address']) ? "
                     <div class=\"rl-gm-info-item\">
                         <div class=\"rl-gm-info-icon\">
-                            <i class=\"fa-solid fa-location-dot\"></i>
+                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\"/><path d=\"M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z\"/></svg>
                         </div>
                         <div class=\"rl-gm-info-text\">
                             {$atts['address']}
                         </div>
                     </div>
+                    " : "") . "
                 </div>
             </div>
         `;
@@ -353,6 +370,7 @@ function google_maps_shortcode($atts) {
         marker.addListener('click', function() {
             infoWindow.open(map, marker);
         });
+        " : "") . "
     };
     </script>
     <script src=\"$api_url\" async defer></script>
@@ -376,7 +394,7 @@ function google_maps_shortcode($atts) {
     ";
 
     // Return the HTML of the map
-    return $fa_script . $custom_css . $responsive_style . '<div id="' . $map_id . '"></div>' . $script;
+    return $custom_css . $responsive_style . '<div id="' . $map_id . '"></div>' . $script;
 }
 
 // Load plugin text domain for translations
