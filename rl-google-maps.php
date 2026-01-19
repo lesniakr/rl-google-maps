@@ -3,7 +3,7 @@
  * Plugin Name: RL Google Maps
  * Plugin URI: https://rafallesniak.com/
  * Description: Add Google Maps to your website using a shortcode.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Rafał Leśniak
  * Author URI: https://rafallesniak.com/
  * Text Domain: rl-google-maps
