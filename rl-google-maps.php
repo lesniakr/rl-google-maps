@@ -14,6 +14,8 @@
 define('RL_GM_DEFAULT_LAT', '52.231998990860056');
 define('RL_GM_DEFAULT_LNG', '21.00603791534297');
 define('RL_GM_DEFAULT_ZOOM', '14');
+define('RL_GM_DEFAULT_HEIGHT', '400');
+define('RL_GM_DEFAULT_MOBILE_HEIGHT', '300');
 
 // Admin menu and settings page
 function rl_google_maps_register_settings() {
@@ -32,6 +34,15 @@ function rl_google_maps_register_settings() {
     register_setting('rl_google_maps_options', 'rl_google_maps_zoom', array(
         'sanitize_callback' => 'intval'
     ));
+    register_setting('rl_google_maps_options', 'rl_google_maps_height', array(
+        'sanitize_callback' => 'intval'
+    ));
+    register_setting('rl_google_maps_options', 'rl_google_maps_mobile_height', array(
+        'sanitize_callback' => 'intval'
+    ));
+    register_setting('rl_google_maps_options', 'rl_google_maps_styles', array(
+        'sanitize_callback' => 'rl_google_maps_sanitize_json'
+    ));
 }
 add_action('admin_init', 'rl_google_maps_register_settings');
 
@@ -45,6 +56,27 @@ function rl_google_maps_admin_menu() {
     );
 }
 add_action('admin_menu', 'rl_google_maps_admin_menu');
+
+// Sanitize JSON input
+function rl_google_maps_sanitize_json($input) {
+    if (empty($input)) {
+        return '';
+    }
+    
+    // Decode and then re-encode to ensure valid JSON
+    $decoded = json_decode($input);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        add_settings_error(
+            'rl_google_maps_options',
+            'json_error',
+            esc_html__('Invalid JSON format for Map Styles. Default styles will be used.', 'rl-google-maps'),
+            'error'
+        );
+        return '';
+    }
+    
+    return json_encode($decoded);
+}
 
 function rl_google_maps_settings_page() {
     ?>
@@ -85,6 +117,30 @@ function rl_google_maps_settings_page() {
                         <input type="number" name="rl_google_maps_zoom" value="<?php echo esc_attr(get_option('rl_google_maps_zoom', RL_GM_DEFAULT_ZOOM)); ?>" min="1" max="21" />
                     </td>
                 </tr>
+                <tr valign="top">
+                    <th scope="row"><?php esc_html_e('Default Map Height', 'rl-google-maps'); ?></th>
+                    <td>
+                        <input type="number" name="rl_google_maps_height" value="<?php echo esc_attr(get_option('rl_google_maps_height', RL_GM_DEFAULT_HEIGHT)); ?>" min="100" max="1000" />
+                        <p class="description"><?php esc_html_e('Height in pixels (px) for desktop.', 'rl-google-maps'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php esc_html_e('Mobile Map Height', 'rl-google-maps'); ?></th>
+                    <td>
+                        <input type="number" name="rl_google_maps_mobile_height" value="<?php echo esc_attr(get_option('rl_google_maps_mobile_height', RL_GM_DEFAULT_MOBILE_HEIGHT)); ?>" min="100" max="1000" />
+                        <p class="description"><?php esc_html_e('Height in pixels (px) for mobile devices (screen width less than 768px).', 'rl-google-maps'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php esc_html_e('Custom Map Styles', 'rl-google-maps'); ?></th>
+                    <td>
+                        <textarea name="rl_google_maps_styles" rows="10" cols="80" class="large-text code"><?php echo esc_textarea(get_option('rl_google_maps_styles', '')); ?></textarea>
+                        <p class="description">
+                            <?php esc_html_e('Paste your custom map styles in JSON format. Leave empty to use the default style.', 'rl-google-maps'); ?>
+                            <a href="https://mapstyle.withgoogle.com/" target="_blank"><?php esc_html_e('Get styles from Google Map Style Wizard', 'rl-google-maps'); ?></a>
+                        </p>
+                    </td>
+                </tr>
             </table>
             <?php submit_button(); ?>
         </form>
@@ -98,17 +154,19 @@ function google_maps_shortcode($atts) {
 
     // Load global defaults from options
     $global_defaults = array(
-        'api_key'      => get_option('rl_google_maps_api_key', ''),
-        'lat'          => get_option('rl_google_maps_lat', RL_GM_DEFAULT_LAT),
-        'lng'          => get_option('rl_google_maps_lng', RL_GM_DEFAULT_LNG),
-        'zoom'         => get_option('rl_google_maps_zoom', RL_GM_DEFAULT_ZOOM),
-        'marker'       => get_option('rl_google_maps_marker', ''),
-        'marker_width' => '48',
-        'marker_height'=> '48',
-        'phone'        => '+48 000 000 000',
-        'address'      => 'plac Defilad 1, 00-901 Warszawa',
-        'title'        => 'Company Name',
-        'email'        => 'contact@domain.com',
+        'api_key'       => get_option('rl_google_maps_api_key', ''),
+        'lat'           => get_option('rl_google_maps_lat', RL_GM_DEFAULT_LAT),
+        'lng'           => get_option('rl_google_maps_lng', RL_GM_DEFAULT_LNG),
+        'zoom'          => get_option('rl_google_maps_zoom', RL_GM_DEFAULT_ZOOM),
+        'marker'        => get_option('rl_google_maps_marker', ''),
+        'marker_width'  => '48',
+        'marker_height' => '48',
+        'height'        => get_option('rl_google_maps_height', RL_GM_DEFAULT_HEIGHT),
+        'mobile_height' => get_option('rl_google_maps_mobile_height', RL_GM_DEFAULT_MOBILE_HEIGHT),
+        'phone'         => '+48 000 000 000',
+        'address'       => 'plac Defilad 1, 00-901 Warszawa',
+        'title'         => 'Company Name',
+        'email'         => 'contact@domain.com',
     );
 
     // Merge shortcode attributes with global defaults
@@ -139,131 +197,104 @@ function google_maps_shortcode($atts) {
     // Font Awesome CDN
     $fa_script = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />';
 
+    // Get custom map styles
+    $custom_styles = get_option('rl_google_maps_styles', '');
+    
+    // Add custom CSS for the InfoWindow
+    $custom_css = "
+    <style>
+        /* Custom InfoWindow styling */
+        .rl-gm-info-window {
+            font-family: 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            max-width: 300px;
+        }
+        .rl-gm-info-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .rl-gm-info-content {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+        }
+        .rl-gm-info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .rl-gm-info-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            background-color: #f8f8f8;
+            border-radius: 50%;
+            color: #555;
+        }
+        .rl-gm-info-text {
+            flex: 1;
+        }
+        .rl-gm-info-link {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.2s ease;
+        }
+        .rl-gm-info-link:hover {
+            color: inherit;
+            text-decoration: underline;
+        }
+        
+        /* Override Google's default InfoWindow styles */
+        .gm-style .gm-style-iw-c {
+            padding: 12px !important;
+            border-radius: 8px !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+        }
+        .gm-style .gm-style-iw-d {
+            overflow: hidden !important;
+            padding: 0 !important;
+        }
+        .gm-style .gm-style-iw-t::after {
+            background: linear-gradient(45deg, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 51%, rgba(255,255,255,0) 100%) !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+        }
+        /* Close button styling */
+        .gm-style .gm-style-iw-c button.gm-ui-hover-effect {
+            top: 0 !important;
+            right: 0 !important;
+            opacity: 0.8 !important;
+        }
+        .gm-style .gm-style-iw-c button.gm-ui-hover-effect:hover {
+            opacity: 1 !important;
+        }
+    </style>
+    ";
+
     // Initialize the map and data in JavaScript
     $script = "
     <script type='text/javascript'>
     window.initGoogleMaps = function() {
-        const map = new google.maps.Map(document.getElementById('$map_id'), {
+        const mapOptions = {
             center: { lat: {$atts['lat']}, lng: {$atts['lng']} },
             zoom: {$atts['zoom']},
             mapTypeControl: false,
             streetViewControl: false,
-            zoomControl: true,
-            styles: [
-                {
-                    'featureType': 'water',
-                    'elementType': 'geometry',
-                    'stylers': [
-                        { 'color': '#e9e9e9' },
-                        { 'lightness': 17 }
-                    ]
-                },
-                {
-                    'featureType': 'landscape',
-                    'elementType': 'geometry',
-                    'stylers': [
-                        { 'color': '#f5f5f5' },
-                        { 'lightness': 20 }
-                    ]
-                },
-                {
-                    'featureType': 'road.highway',
-                    'elementType': 'geometry.fill',
-                    'stylers': [
-                        { 'color': '#ffffff' },
-                        { 'lightness': 17 }
-                    ]
-                },
-                {
-                    'featureType': 'road.highway',
-                    'elementType': 'geometry.stroke',
-                    'stylers': [
-                        { 'color': '#ffffff' },
-                        { 'lightness': 29 },
-                        { 'weight': 0.2 }
-                    ]
-                },
-                {
-                    'featureType': 'road.arterial',
-                    'elementType': 'geometry',
-                    'stylers': [
-                        { 'color': '#ffffff' },
-                        { 'lightness': 18 }
-                    ]
-                },
-                {
-                    'featureType': 'road.local',
-                    'elementType': 'geometry',
-                    'stylers': [
-                        { 'color': '#ffffff' },
-                        { 'lightness': 16 }
-                    ]
-                },
-                {
-                    'featureType': 'poi',
-                    'elementType': 'geometry',
-                    'stylers': [
-                        { 'color': '#f5f5f5' },
-                        { 'lightness': 21 }
-                    ]
-                },
-                {
-                    'featureType': 'poi.park',
-                    'elementType': 'geometry',
-                    'stylers': [
-                        { 'color': '#dedede' },
-                        { 'lightness': 21 }
-                    ]
-                },
-                {
-                    'elementType': 'labels.text.stroke',
-                    'stylers': [
-                        { 'visibility': 'on' },
-                        { 'color': '#ffffff' },
-                        { 'lightness': 16 }
-                    ]
-                },
-                {
-                    'elementType': 'labels.text.fill',
-                    'stylers': [
-                        { 'saturation': 36 },
-                        { 'color': '#333333' },
-                        { 'lightness': 40 }
-                    ]
-                },
-                {
-                    'elementType': 'labels.icon',
-                    'stylers': [
-                        { 'visibility': 'off' }
-                    ]
-                },
-                {
-                    'featureType': 'transit',
-                    'elementType': 'geometry',
-                    'stylers': [
-                        { 'color': '#f2f2f2' },
-                        { 'lightness': 19 }
-                    ]
-                },
-                {
-                    'featureType': 'administrative',
-                    'elementType': 'geometry.fill',
-                    'stylers': [
-                        { 'color': '#fefefe' },
-                        { 'lightness': 20 }
-                    ]
-                },
-                {
-                    'featureType': 'administrative',
-                    'elementType': 'geometry.stroke',
-                    'stylers': [
-                        { 'color': '#fefefe' },
-                        { 'lightness': 17 },
-                        { 'weight': 1.2 }
-                    ]
-                }
-            ]
-        });
+            zoomControl: true
+        };
+        
+        " . (!empty($custom_styles) ? "mapOptions.styles = $custom_styles;" : "") . "
+        
+        const map = new google.maps.Map(document.getElementById('$map_id'), mapOptions);
 
         const marker = new google.maps.Marker({
             position: { lat: {$atts['lat']}, lng: {$atts['lng']} },
@@ -281,25 +312,41 @@ function google_maps_shortcode($atts) {
         }, 3000);
 
         const infoWindowContent = `
-            <div>
-                <h4>{$atts['title']}</h4>
-                <p style='margin-bottom: 4px;'>
-                    <i class='fa-solid fa-phone' style='margin-right:6px;'></i>
-                    <a href='tel:{$cleaned_phone}'>{$atts['phone']}</a>
-                </p>
-                <p style='margin-bottom: 4px;'>
-                    <i class='fa-solid fa-envelope' style='margin-right:6px;'></i>
-                    <a href='mailto:{$atts['email']}'>{$atts['email']}</a>
-                </p>
-                <p style='margin-bottom: 4px;'>
-                    <i class='fa-solid fa-location-dot' style='margin-right:6px;'></i>
-                    {$atts['address']}
-                </p>
+            <div class=\"rl-gm-info-window\">
+                <h4 class=\"rl-gm-info-title\">{$atts['title']}</h4>
+                <div class=\"rl-gm-info-content\">
+                    <div class=\"rl-gm-info-item\">
+                        <div class=\"rl-gm-info-icon\">
+                            <i class=\"fa-solid fa-phone\"></i>
+                        </div>
+                        <div class=\"rl-gm-info-text\">
+                            <a href=\"tel:{$cleaned_phone}\" class=\"rl-gm-info-link\">{$atts['phone']}</a>
+                        </div>
+                    </div>
+                    <div class=\"rl-gm-info-item\">
+                        <div class=\"rl-gm-info-icon\">
+                            <i class=\"fa-solid fa-envelope\"></i>
+                        </div>
+                        <div class=\"rl-gm-info-text\">
+                            <a href=\"mailto:{$atts['email']}\" class=\"rl-gm-info-link\">{$atts['email']}</a>
+                        </div>
+                    </div>
+                    <div class=\"rl-gm-info-item\">
+                        <div class=\"rl-gm-info-icon\">
+                            <i class=\"fa-solid fa-location-dot\"></i>
+                        </div>
+                        <div class=\"rl-gm-info-text\">
+                            {$atts['address']}
+                        </div>
+                    </div>
+                </div>
             </div>
         `;
 
         const infoWindow = new google.maps.InfoWindow({
-            content: infoWindowContent
+            content: infoWindowContent,
+            maxWidth: 320,
+            pixelOffset: new google.maps.Size(0, -5)
         });
 
         // Open the InfoWindow when the marker is clicked
@@ -311,8 +358,25 @@ function google_maps_shortcode($atts) {
     <script src=\"$api_url\" async defer></script>
     ";
 
+    // Add responsive height styling
+    $responsive_style = "
+    <style>
+        #$map_id {
+            width: 100%;
+            height: " . esc_attr($atts['height']) . "px;
+            border-radius: 12px;
+        }
+        
+        @media only screen and (max-width: 767px) {
+            #$map_id {
+                height: " . esc_attr($atts['mobile_height']) . "px;
+            }
+        }
+    </style>
+    ";
+
     // Return the HTML of the map
-    return $fa_script . '<div id="' . $map_id . '" style="width: 100%; height: 400px;"></div>' . $script;
+    return $fa_script . $custom_css . $responsive_style . '<div id="' . $map_id . '"></div>' . $script;
 }
 
 // Load plugin text domain for translations

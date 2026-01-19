@@ -51,6 +51,38 @@ msgstr ""
 msgid "Default Zoom"
 msgstr ""
 
+#: rl-google-maps.php:79
+msgid "Default Map Height"
+msgstr ""
+
+#: rl-google-maps.php:81
+msgid "Height in pixels (px) for desktop."
+msgstr ""
+
+#: rl-google-maps.php:86
+msgid "Mobile Map Height"
+msgstr ""
+
+#: rl-google-maps.php:88
+msgid "Height in pixels (px) for mobile devices (screen width less than 768px)."
+msgstr ""
+
+#: rl-google-maps.php:93
+msgid "Custom Map Styles"
+msgstr ""
+
+#: rl-google-maps.php:96
+msgid "Paste your custom map styles in JSON format. Leave empty to use the default style."
+msgstr ""
+
+#: rl-google-maps.php:97
+msgid "Get styles from Google Map Style Wizard"
+msgstr ""
+
+#: rl-google-maps.php:23
+msgid "Invalid JSON format for Map Styles. Default styles will be used."
+msgstr ""
+
 #: rl-google-maps.php:104
 msgid "Error:"
 msgstr ""

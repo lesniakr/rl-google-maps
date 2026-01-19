@@ -50,6 +50,38 @@ msgstr "Domyślna długość geograficzna"
 msgid "Default Zoom"
 msgstr "Domyślne przybliżenie"
 
+#: rl-google-maps.php:79
+msgid "Default Map Height"
+msgstr "Domyślna wysokość mapy"
+
+#: rl-google-maps.php:81
+msgid "Height in pixels (px) for desktop."
+msgstr "Wysokość w pikselach (px) dla urządzeń desktopowych."
+
+#: rl-google-maps.php:86
+msgid "Mobile Map Height"
+msgstr "Wysokość mapy na urządzeniach mobilnych"
+
+#: rl-google-maps.php:88
+msgid "Height in pixels (px) for mobile devices (screen width less than 768px)."
+msgstr "Wysokość w pikselach (px) dla urządzeń mobilnych (szerokość ekranu mniejsza niż 768px)."
+
+#: rl-google-maps.php:93
+msgid "Custom Map Styles"
+msgstr "Niestandardowe style mapy"
+
+#: rl-google-maps.php:96
+msgid "Paste your custom map styles in JSON format. Leave empty to use the default style."
+msgstr "Wklej niestandardowe style mapy w formacie JSON. Pozostaw puste, aby użyć domyślnego stylu."
+
+#: rl-google-maps.php:97
+msgid "Get styles from Google Map Style Wizard"
+msgstr "Pobierz style z Google Map Style Wizard"
+
+#: rl-google-maps.php:23
+msgid "Invalid JSON format for Map Styles. Default styles will be used."
+msgstr "Nieprawidłowy format JSON dla stylów mapy. Zostaną użyte domyślne style."
+
 #: rl-google-maps.php:104
 msgid "Error:"
 msgstr "Błąd:"
