@@ -1,10 +1,10 @@
-# Copyright (C) 2025 Rafał Leśniak
+# Copyright (C) 2026 Rafał Leśniak
 # This file is distributed under the same license as the RL Google Maps plugin.
 msgid ""
 msgstr ""
 "Project-Id-Version: RL Google Maps 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-22T00:26:00+00:00\n"
+"POT-Creation-Date: 2026-01-19T00:00:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -15,78 +15,106 @@ msgstr ""
 "X-Generator: Poedit 3.6\n"
 "X-Domain: rl-google-maps\n"
 
-#: rl-google-maps.php:29
+#: rl-google-maps.php:51
 msgid "RL Google Maps Settings"
 msgstr ""
 
-#: rl-google-maps.php:30
+#: rl-google-maps.php:52
 msgid "RL Google Maps"
 msgstr ""
 
-#: rl-google-maps.php:42
-msgid "RL Google Maps – Global Defaults"
+#: rl-google-maps.php:83
+msgid "API Configuration"
 msgstr ""
 
-#: rl-google-maps.php:48
+#: rl-google-maps.php:87
 msgid "Google Maps API Key"
 msgstr ""
 
-#: rl-google-maps.php:54
-msgid "Default Marker URL"
+#: rl-google-maps.php:90
+msgid "Enter your Google Maps API key. You can get one from the"
 msgstr ""
 
-#: rl-google-maps.php:56
-msgid "Leave empty for plugin default."
-msgstr ""
-
-#: rl-google-maps.php:61
-msgid "Default Latitude"
-msgstr ""
-
-#: rl-google-maps.php:67
-msgid "Default Longitude"
-msgstr ""
-
-#: rl-google-maps.php:73
-msgid "Default Zoom"
-msgstr ""
-
-#: rl-google-maps.php:79
-msgid "Default Map Height"
-msgstr ""
-
-#: rl-google-maps.php:81
-msgid "Height in pixels (px) for desktop."
-msgstr ""
-
-#: rl-google-maps.php:86
-msgid "Mobile Map Height"
-msgstr ""
-
-#: rl-google-maps.php:88
-msgid "Height in pixels (px) for mobile devices (screen width less than 768px)."
-msgstr ""
-
-#: rl-google-maps.php:93
-msgid "Custom Map Styles"
+#: rl-google-maps.php:90
+msgid "Google Cloud Console"
 msgstr ""
 
 #: rl-google-maps.php:96
-msgid "Paste your custom map styles in JSON format. Leave empty to use the default style."
+msgid "Default Map Settings"
 msgstr ""
 
 #: rl-google-maps.php:97
-msgid "Get styles from Google Map Style Wizard"
+msgid "These values will be used when not specified in the shortcode."
 msgstr ""
 
-#: rl-google-maps.php:23
+#: rl-google-maps.php:100
+msgid "Latitude"
+msgstr ""
+
+#: rl-google-maps.php:106
+msgid "Longitude"
+msgstr ""
+
+#: rl-google-maps.php:112
+msgid "Zoom Level"
+msgstr ""
+
+#: rl-google-maps.php:115
+msgid "Value between 1 (world) and 21 (street level)."
+msgstr ""
+
+#: rl-google-maps.php:121
+msgid "Map Dimensions"
+msgstr ""
+
+#: rl-google-maps.php:124
+msgid "Desktop Height"
+msgstr ""
+
+#: rl-google-maps.php:130
+msgid "Mobile Height"
+msgstr ""
+
+#: rl-google-maps.php:133
+msgid "Applied when screen width is less than 768px."
+msgstr ""
+
+#: rl-google-maps.php:139
+msgid "Marker Settings"
+msgstr ""
+
+#: rl-google-maps.php:143
+msgid "Custom Marker URL"
+msgstr ""
+
+#: rl-google-maps.php:146
+msgid "Leave empty to use the default marker."
+msgstr ""
+
+#: rl-google-maps.php:152
+msgid "Map Appearance"
+msgstr ""
+
+#: rl-google-maps.php:156
+msgid "Custom Map Styles"
+msgstr ""
+
+#: rl-google-maps.php:159
+msgid "Paste your custom map styles in JSON format."
+msgstr ""
+
+#: rl-google-maps.php:160
+msgid "Browse styles on Snazzy Maps"
+msgstr ""
+
+#: rl-google-maps.php:71
 msgid "Invalid JSON format for Map Styles. Default styles will be used."
 msgstr ""
 
-#: rl-google-maps.php:104
+#: rl-google-maps.php:212
 msgid "Error:"
 msgstr ""
 
-#: rl-google-maps.php:105
+#: rl-google-maps.php:213
 msgid "You must provide a Google Maps API key in the admin settings or using the api_key attribute in the shortcode."
 msgstr ""
