@@ -50,11 +50,16 @@ The shortcode will automatically display a map with a marker and an info window 
 - [X] Single marker with info window and contact details
 - [ ] Option to add multiple markers via shortcode attributes or JSON
 - [X] Custom map themes/styles selection
+- [ ] Predefined map styles picker (Snazzy Maps presets)
+- [ ] JSON syntax highlighting for map styles editor
 - [ ] Option to disable/enable map controls (zoom, street view, etc.)
 - [ ] Cluster support for multiple markers
 - [ ] Option to display directions between points
 - [ ] Gutenberg block for easier map insertion
 - [X] Admin settings page for global defaults (API key, marker, etc.)
+- [ ] Global default contact info settings (address, phone, email, title)
+- [ ] Tabbed admin interface (Settings, Shortcode Generator, Documentation)
+- [ ] Shortcode generator in admin panel
 - [ ] Support for marker popups with custom HTML
 - [X] Responsive and mobile-friendly improvements
 - [ ] Accessibility enhancements
