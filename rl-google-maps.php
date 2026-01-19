@@ -81,67 +81,93 @@ function rl_google_maps_sanitize_json($input) {
 function rl_google_maps_settings_page() {
     ?>
     <div class="wrap">
-        <h1><?php esc_html_e('RL Google Maps – Global Defaults', 'rl-google-maps'); ?></h1>
+        <h1><?php esc_html_e('RL Google Maps Settings', 'rl-google-maps'); ?></h1>
         <form method="post" action="options.php">
             <?php settings_fields('rl_google_maps_options'); ?>
             <?php do_settings_sections('rl_google_maps_options'); ?>
-            <table class="form-table">
+            
+            <!-- API Configuration -->
+            <h2 class="title"><?php esc_html_e('API Configuration', 'rl-google-maps'); ?></h2>
+            <table class="form-table" role="presentation">
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Google Maps API Key', 'rl-google-maps'); ?></th>
                     <td>
-                        <input type="text" name="rl_google_maps_api_key" value="<?php echo esc_attr(get_option('rl_google_maps_api_key', '')); ?>" size="40" />
+                        <input type="text" name="rl_google_maps_api_key" value="<?php echo esc_attr(get_option('rl_google_maps_api_key', '')); ?>" class="regular-text" />
+                        <p class="description"><?php esc_html_e('Enter your Google Maps API key. You can get one from the', 'rl-google-maps'); ?> <a href="https://console.cloud.google.com/apis/credentials" target="_blank"><?php esc_html_e('Google Cloud Console', 'rl-google-maps'); ?></a>.</p>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Default Map Settings -->
+            <h2 class="title"><?php esc_html_e('Default Map Settings', 'rl-google-maps'); ?></h2>
+            <p class="description"><?php esc_html_e('These values will be used when not specified in the shortcode.', 'rl-google-maps'); ?></p>
+            <table class="form-table" role="presentation">
+                <tr valign="top">
+                    <th scope="row"><?php esc_html_e('Latitude', 'rl-google-maps'); ?></th>
+                    <td>
+                        <input type="text" name="rl_google_maps_lat" value="<?php echo esc_attr(get_option('rl_google_maps_lat', RL_GM_DEFAULT_LAT)); ?>" class="regular-text" />
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php esc_html_e('Default Marker URL', 'rl-google-maps'); ?></th>
+                    <th scope="row"><?php esc_html_e('Longitude', 'rl-google-maps'); ?></th>
                     <td>
-                        <input type="text" name="rl_google_maps_marker" value="<?php echo esc_attr(get_option('rl_google_maps_marker', '')); ?>" size="40" />
-                        <p class="description"><?php esc_html_e('Leave empty for plugin default.', 'rl-google-maps'); ?></p>
+                        <input type="text" name="rl_google_maps_lng" value="<?php echo esc_attr(get_option('rl_google_maps_lng', RL_GM_DEFAULT_LNG)); ?>" class="regular-text" />
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php esc_html_e('Default Latitude', 'rl-google-maps'); ?></th>
+                    <th scope="row"><?php esc_html_e('Zoom Level', 'rl-google-maps'); ?></th>
                     <td>
-                        <input type="text" name="rl_google_maps_lat" value="<?php echo esc_attr(get_option('rl_google_maps_lat', RL_GM_DEFAULT_LAT)); ?>" size="20" />
+                        <input type="number" name="rl_google_maps_zoom" value="<?php echo esc_attr(get_option('rl_google_maps_zoom', RL_GM_DEFAULT_ZOOM)); ?>" min="1" max="21" class="small-text" />
+                        <p class="description"><?php esc_html_e('Value between 1 (world) and 21 (street level).', 'rl-google-maps'); ?></p>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Map Dimensions -->
+            <h2 class="title"><?php esc_html_e('Map Dimensions', 'rl-google-maps'); ?></h2>
+            <table class="form-table" role="presentation">
+                <tr valign="top">
+                    <th scope="row"><?php esc_html_e('Desktop Height', 'rl-google-maps'); ?></th>
+                    <td>
+                        <input type="number" name="rl_google_maps_height" value="<?php echo esc_attr(get_option('rl_google_maps_height', RL_GM_DEFAULT_HEIGHT)); ?>" min="100" max="1000" class="small-text" /> px
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php esc_html_e('Default Longitude', 'rl-google-maps'); ?></th>
+                    <th scope="row"><?php esc_html_e('Mobile Height', 'rl-google-maps'); ?></th>
                     <td>
-                        <input type="text" name="rl_google_maps_lng" value="<?php echo esc_attr(get_option('rl_google_maps_lng', RL_GM_DEFAULT_LNG)); ?>" size="20" />
+                        <input type="number" name="rl_google_maps_mobile_height" value="<?php echo esc_attr(get_option('rl_google_maps_mobile_height', RL_GM_DEFAULT_MOBILE_HEIGHT)); ?>" min="100" max="1000" class="small-text" /> px
+                        <p class="description"><?php esc_html_e('Applied when screen width is less than 768px.', 'rl-google-maps'); ?></p>
                     </td>
                 </tr>
+            </table>
+
+            <!-- Marker Settings -->
+            <h2 class="title"><?php esc_html_e('Marker Settings', 'rl-google-maps'); ?></h2>
+            <table class="form-table" role="presentation">
                 <tr valign="top">
-                    <th scope="row"><?php esc_html_e('Default Zoom', 'rl-google-maps'); ?></th>
+                    <th scope="row"><?php esc_html_e('Custom Marker URL', 'rl-google-maps'); ?></th>
                     <td>
-                        <input type="number" name="rl_google_maps_zoom" value="<?php echo esc_attr(get_option('rl_google_maps_zoom', RL_GM_DEFAULT_ZOOM)); ?>" min="1" max="21" />
+                        <input type="text" name="rl_google_maps_marker" value="<?php echo esc_attr(get_option('rl_google_maps_marker', '')); ?>" class="large-text" />
+                        <p class="description"><?php esc_html_e('Leave empty to use the default marker.', 'rl-google-maps'); ?></p>
                     </td>
                 </tr>
-                <tr valign="top">
-                    <th scope="row"><?php esc_html_e('Default Map Height', 'rl-google-maps'); ?></th>
-                    <td>
-                        <input type="number" name="rl_google_maps_height" value="<?php echo esc_attr(get_option('rl_google_maps_height', RL_GM_DEFAULT_HEIGHT)); ?>" min="100" max="1000" />
-                        <p class="description"><?php esc_html_e('Height in pixels (px) for desktop.', 'rl-google-maps'); ?></p>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?php esc_html_e('Mobile Map Height', 'rl-google-maps'); ?></th>
-                    <td>
-                        <input type="number" name="rl_google_maps_mobile_height" value="<?php echo esc_attr(get_option('rl_google_maps_mobile_height', RL_GM_DEFAULT_MOBILE_HEIGHT)); ?>" min="100" max="1000" />
-                        <p class="description"><?php esc_html_e('Height in pixels (px) for mobile devices (screen width less than 768px).', 'rl-google-maps'); ?></p>
-                    </td>
-                </tr>
+            </table>
+
+            <!-- Map Appearance -->
+            <h2 class="title"><?php esc_html_e('Map Appearance', 'rl-google-maps'); ?></h2>
+            <table class="form-table" role="presentation">
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Custom Map Styles', 'rl-google-maps'); ?></th>
                     <td>
                         <textarea name="rl_google_maps_styles" rows="10" cols="80" class="large-text code"><?php echo esc_textarea(get_option('rl_google_maps_styles', '')); ?></textarea>
                         <p class="description">
-                            <?php esc_html_e('Paste your custom map styles in JSON format. Leave empty to use the default style.', 'rl-google-maps'); ?>
-                            <a href="https://mapstyle.withgoogle.com/" target="_blank"><?php esc_html_e('Get styles from Google Map Style Wizard', 'rl-google-maps'); ?></a>
+                            <?php esc_html_e('Paste your custom map styles in JSON format.', 'rl-google-maps'); ?>
+                            <a href="https://snazzymaps.com/explore" target="_blank"><?php esc_html_e('Browse styles on Snazzy Maps', 'rl-google-maps'); ?></a>
                         </p>
                     </td>
                 </tr>
             </table>
+
             <?php submit_button(); ?>
         </form>
     </div>

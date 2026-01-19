@@ -31,7 +31,7 @@ If the "Default Marker URL" field in the admin settings is empty and you do not 
 
 ### Custom Map Styles
 
-You can set custom map styles in the plugin settings page. Paste your JSON styles in the "Custom Map Styles" textarea. You can create custom styles using the [Google Maps Style Wizard](https://mapstyle.withgoogle.com/).
+You can set custom map styles in the plugin settings page. Paste your JSON styles in the "Custom Map Styles" textarea. You can browse and copy styles from [Snazzy Maps](https://snazzymaps.com/explore).
 
 ### Responsive Maps
 
